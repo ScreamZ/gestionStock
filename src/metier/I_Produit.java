@@ -1,9 +1,11 @@
 package metier;
 
+import metier.exceptions.ValeurNegativeException;
+
 public interface I_Produit {
 
-	public abstract boolean ajouter(int qteAchetee);
-	public abstract boolean enlever(int qteVendue);
+	public abstract boolean ajouter(int qteAchetee) throws ValeurNegativeException;
+	public abstract boolean enlever(int qteVendue) throws ValeurNegativeException;
 	public abstract String getNom();
 	public abstract int getQuantite();
 	public abstract double getPrixUnitaireHT();
