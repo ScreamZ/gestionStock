@@ -1,4 +1,4 @@
-package Metier;
+package metier;
 
 /**
  * Project : GestionStock

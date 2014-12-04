@@ -1,10 +1,10 @@
-package Metier;
+package metier;
 
 import java.util.List;
 
 /**
  * Project : GestionStock
- * Package : Metier
+ * Package : metier
  * Created by ScreamZ
  */
 public class Catalogue implements I_Catalogue {
