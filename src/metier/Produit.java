@@ -3,7 +3,7 @@ package metier;
 import metier.exceptions.ValeurNegativeException;
 
 /**
- * <strong>metier</strong>
+ * <strong>Produit</strong>
  * <p/>
  * <p>Cette classe représente un objet que l'on peut vendre ou acheter.</p>
  */
@@ -27,7 +27,7 @@ public class Produit implements I_Produit {
     /**
      * Taux de TVA communs à tous les objets
      */
-    private static float tauxTVA = (float) 0.2;
+    private final static float tauxTVA = 0.2f;
 
     public Produit(String nom, float prixUnitaireHT, int qte) {
         this.quantiteStock = qte;
@@ -75,28 +75,43 @@ public class Produit implements I_Produit {
         }
     }
 
+    /**
+     * Retourne le nom du produit
+     *
+     * @return le nombre du produit
+     */
     @Override
     public String getNom() {
-        return null;
+        return this.nom;
     }
 
     @Override
     public int getQuantite() {
-        return 0;
+        return this.quantiteStock;
     }
 
     @Override
     public double getPrixUnitaireHT() {
-        return 0;
+        return this.prixUnitaireHT;
     }
 
+    /**
+     * Calcule le prix TTC pour le produit (hors taxe multiplié par la TVA).
+     *
+     * @return le prix TTC
+     */
     @Override
     public double getPrixUnitaireTTC() {
-        return 0;
+        return this.prixUnitaireHT * tauxTVA;
     }
 
+    /**
+     * Calcule la valeur TTC du stock
+     *
+     * @return La valeur TTC de l'intégralité du stock
+     */
     @Override
     public double getPrixStockTTC() {
-        return 0;
+        return getPrixUnitaireTTC() * quantiteStock;
     }
 }
