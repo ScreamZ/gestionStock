@@ -114,4 +114,13 @@ public class Produit implements I_Produit {
     public double getPrixStockTTC() {
         return getPrixUnitaireTTC() * quantiteStock;
     }
+
+    @Override
+    public String toString() {
+        return "Produit{" +
+                "quantiteStock=" + quantiteStock +
+                ", nom='" + nom + '\'' +
+                ", prixUnitaireHT=" + prixUnitaireHT +
+                '}';
+    }
 }
