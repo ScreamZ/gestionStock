@@ -1,7 +1,11 @@
 package presentation;
-import java.awt.*;
-import java.awt.event.*;
+
+import application.CRUDProduitControleur;
+
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class FenetreNouveauProduit extends JFrame implements ActionListener {
 
@@ -10,12 +14,14 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 	private JTextField txtQte;
 //	private JComboBox<String> combo;
 	private JButton btValider;
+    private CRUDProduitControleur controleur;
 
 //	public FenetreNouveauProduit(String[] lesCategories) {
-	public FenetreNouveauProduit() {	
+public FenetreNouveauProduit() {
 
-		setTitle("Creation Produit");
-		setBounds(500, 500, 200, 250);
+    controleur = CRUDProduitControleur.getControleur();
+    setTitle("Creation Produit");
+    setBounds(500, 500, 200, 250);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new FlowLayout());
 
@@ -47,7 +53,12 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		this.dispose();
-	}
+        String nom = this.txtNom.getText();
+        Double prix = Double.parseDouble(this.txtPrixHT.getText());
+        int qte = Integer.parseInt(this.txtQte.getText());
+
+        this.controleur.ajouterProduit(nom, prix, qte);
+        this.dispose();
+    }
 
 }

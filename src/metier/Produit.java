@@ -10,26 +10,23 @@ import metier.exceptions.ValeurNegativeException;
 public class Produit implements I_Produit {
 
     /**
+     * Taux de TVA communs à tous les objets
+     */
+    private final static double tauxTVA = 0.2;
+    /**
      * Représente la quantité de stocks disponible pour le produit
      */
     private int quantiteStock;
-
     /**
      * Représente le nom du produit (sa dénomination)
      */
     private String nom;
-
     /**
      * Représente le prix unitaire du produit (hors taxes)
      */
-    private float prixUnitaireHT;
+    private double prixUnitaireHT;
 
-    /**
-     * Taux de TVA communs à tous les objets
-     */
-    private final static float tauxTVA = 0.2f;
-
-    public Produit(String nom, float prixUnitaireHT, int qte) {
+    public Produit(String nom, double prixUnitaireHT, int qte) {
         this.quantiteStock = qte;
         this.nom = nom;
         this.prixUnitaireHT = prixUnitaireHT;
