@@ -73,7 +73,11 @@ public class Catalogue implements I_Catalogue {
         int nb = 0;
         while (i.hasNext()) {
         	I_Produit p = (I_Produit) i.next();
+<<<<<<< HEAD
         	if(p.getPrixUnitaireHT() <= 0 || p.getQuantite() <= 0) continue;
+=======
+        	if(p.getPrixUnitaireHT() <= 0) continue;
+>>>>>>> c4f09207c1f2f9623a7d4814b777118d8dce9da9
         	else if (this.addProduit(p)) nb++;
         }
         return nb;
