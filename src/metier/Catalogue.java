@@ -63,6 +63,9 @@ public class Catalogue implements I_Catalogue {
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(p.getNom())) return false;
         }
+
+        if (p.getPrixUnitaireHT() <= 0) return false;
+        if (p.getQuantite() < 0) return false;
         this.addProduit(p);
         return true;
     }
@@ -143,6 +146,8 @@ public class Catalogue implements I_Catalogue {
      */
     @Override
     public boolean vendreStock(String nomProduit, int qteVendue) {
+
+        if (qteVendue <= 0) return false;
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(nomProduit)) {
                 try {
