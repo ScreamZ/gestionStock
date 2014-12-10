@@ -36,9 +36,14 @@ public class Catalogue implements I_Catalogue {
      */
     @Override
     public boolean addProduit(I_Produit produit) { // TODO Ajouter la gestion d'une exception si le produit existe
-        if (this.productList.indexOf(produit) >= 0 || produit == null)
+        if (produit == null)
             return false;
-        if(produit.getPrixUnitaireHT() <= 0) return false;
+
+        for (I_Produit i_produit : productList) {
+            if (i_produit.getNom().equals(produit.getNom())) return false;
+        }
+
+        if (produit.getPrixUnitaireHT() <= 0) return false;
         this.productList.add(produit);
         return true;
     }
@@ -55,6 +60,10 @@ public class Catalogue implements I_Catalogue {
     @Override
     public boolean addProduit(String nom, double prix, int qte) {
         Produit p = new Produit(nom, prix, qte);
+
+        for (I_Produit i_produit : productList) {
+            if (i_produit.getNom().equals(p.getNom())) return false;
+        }
         this.addProduit(p);
         return true;
     }
@@ -68,7 +77,7 @@ public class Catalogue implements I_Catalogue {
      */
     @Override
     public int addProduits(List<I_Produit> listeProduits) {
-    	if(listeProduits == null) return 0;
+        if (listeProduits == null) return 0;
         Iterator i = listeProduits.iterator();
         int nb = 0;
         while (i.hasNext()) {
@@ -112,7 +121,6 @@ public class Catalogue implements I_Catalogue {
      */
     @Override
     public boolean acheterStock(String nomProduit, int qteAchetee) {
-    	if(qteAchetee <= 0) return false;
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(nomProduit)) {
                 try {
