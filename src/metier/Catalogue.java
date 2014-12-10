@@ -3,6 +3,8 @@ package metier;
 import metier.exceptions.ValeurNegativeException;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -165,6 +167,12 @@ public class Catalogue implements I_Catalogue {
     public String[] getNomProduits() {
         String[] lesProduits = new String[productList.size()];
         int compteur = 0;
+        
+        Collections.sort(productList, new Comparator<I_Produit>() {
+            public int compare(I_Produit p1, I_Produit p2) {
+                return p1.getNom().compareTo(p2.getNom());
+            }
+        });
 
         for (I_Produit i_produit : productList) {
             lesProduits[compteur] = i_produit.getNom();
