@@ -12,7 +12,7 @@ public class Produit implements I_Produit {
     /**
      * Taux de TVA communs à tous les objets
      */
-    private final static double tauxTVA = 0.2;
+    private final static double tauxTVA = 1.2;
     /**
      * Représente la quantité de stocks disponible pour le produit
      */
@@ -109,7 +109,7 @@ public class Produit implements I_Produit {
      */
     @Override
     public double getPrixStockTTC() {
-        return getPrixUnitaireTTC() * quantiteStock;
+        return getPrixUnitaireTTC() * this.quantiteStock;
     }
 
     /**
