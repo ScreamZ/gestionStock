@@ -101,13 +101,16 @@ public class Catalogue implements I_Catalogue {
      *
      * @return True si l'action s'est correctement effectuée, False le cas échéant
      *
-     * @throws ValeurNegativeException
      */
     @Override
-    public boolean acheterStock(String nomProduit, int qteAchetee) throws ValeurNegativeException {
+    public boolean acheterStock(String nomProduit, int qteAchetee) {
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(nomProduit)) {
-                i_produit.ajouter(qteAchetee);
+                try {
+                    i_produit.ajouter(qteAchetee);
+                } catch (ValeurNegativeException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         }
@@ -125,10 +128,14 @@ public class Catalogue implements I_Catalogue {
      * @throws ValeurNegativeException
      */
     @Override
-    public boolean vendreStock(String nomProduit, int qteVendue) throws ValeurNegativeException {
+    public boolean vendreStock(String nomProduit, int qteVendue) {
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(nomProduit)) {
-                i_produit.enlever(qteVendue);
+                try {
+                    i_produit.enlever(qteVendue);
+                } catch (ValeurNegativeException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         }
