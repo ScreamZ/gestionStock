@@ -36,8 +36,9 @@ public class Catalogue implements I_Catalogue {
      */
     @Override
     public boolean addProduit(I_Produit produit) { // TODO Ajouter la gestion d'une exception si le produit existe
-        if (this.productList.indexOf(produit) >= 0 && produit != null)
+        if (this.productList.indexOf(produit) >= 0 || produit == null)
             return false;
+        if(produit.getPrixUnitaireHT() <= 0) return false;
         this.productList.add(produit);
         return true;
     }
@@ -71,7 +72,9 @@ public class Catalogue implements I_Catalogue {
         Iterator i = listeProduits.iterator();
         int nb = 0;
         while (i.hasNext()) {
-            if (this.addProduit((I_Produit) i.next())) nb++;
+        	I_Produit p = (I_Produit) i.next();
+        	if(p.getPrixUnitaireHT() <= 0 || p.getQuantite() <= 0) continue;
+        	else if (this.addProduit(p)) nb++;
         }
         return nb;
     }
@@ -105,6 +108,7 @@ public class Catalogue implements I_Catalogue {
      */
     @Override
     public boolean acheterStock(String nomProduit, int qteAchetee) {
+    	if(qteAchetee <= 0) return false;
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(nomProduit)) {
                 try {
@@ -133,6 +137,7 @@ public class Catalogue implements I_Catalogue {
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(nomProduit)) {
                 try {
+                	if(i_produit.getQuantite() < qteVendue) return false;
                     i_produit.enlever(qteVendue);
                 } catch (ValeurNegativeException e) {
                     e.printStackTrace();
@@ -173,7 +178,7 @@ public class Catalogue implements I_Catalogue {
             total += i_produit.getPrixStockTTC();
         }
 
-        return total;
+        return Math.round( total * 100.0 ) / 100.0;
     }
 
     /**
