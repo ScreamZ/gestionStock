@@ -81,9 +81,9 @@ public class Catalogue implements I_Catalogue {
         Iterator i = listeProduits.iterator();
         int nb = 0;
         while (i.hasNext()) {
-            I_Produit p = (I_Produit) i.next();
-            if (p.getPrixUnitaireHT() <= 0) continue;
-            else if (this.addProduit(p)) nb++;
+        	I_Produit p = (I_Produit) i.next();
+        	if(p.getPrixUnitaireHT() <= 0) continue;
+        	else if (this.addProduit(p)) nb++;
         }
         return nb;
     }
@@ -113,10 +113,10 @@ public class Catalogue implements I_Catalogue {
      * @param qteAchetee La quantitée à ajouter
      *
      * @return True si l'action s'est correctement effectuée, False le cas échéant
+     *
      */
     @Override
     public boolean acheterStock(String nomProduit, int qteAchetee) {
-        if (qteAchetee <= 0) return false;
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(nomProduit)) {
                 try {
@@ -145,7 +145,7 @@ public class Catalogue implements I_Catalogue {
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(nomProduit)) {
                 try {
-                    if (i_produit.getQuantite() < qteVendue) return false;
+                	if(i_produit.getQuantite() < qteVendue) return false;
                     i_produit.enlever(qteVendue);
                 } catch (ValeurNegativeException e) {
                     e.printStackTrace();
