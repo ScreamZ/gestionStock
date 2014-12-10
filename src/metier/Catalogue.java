@@ -1,5 +1,7 @@
 package metier;
 
+import metier.exceptions.ValeurNegativeException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,14 +27,30 @@ public class Catalogue implements I_Catalogue {
         return Catalogue.c;
     }
 
+    /**
+     * Ajoute le produit donné au catalogue
+     *
+     * @param produit L'instance du produit donnée
+     *
+     * @return True si l'ajout c'est correctement effectué, False le cas échéant
+     */
     @Override
-    public boolean addProduit(I_Produit produit) {
+    public boolean addProduit(I_Produit produit) { // TODO Ajouter la gestion d'une exception si le produit existe
         if (this.productList.indexOf(produit) >= 0)
             return false;
         this.productList.add(produit);
         return true;
     }
 
+    /**
+     * Créer un produit grâces aux valeurs passées en parametres et l'ajoute au catalogue
+     *
+     * @param nom  Le nom du produit
+     * @param prix Le prix unitaire HT du produit
+     * @param qte  La quantité du produit dans le catalogue
+     *
+     * @return True si l'ajout s'est correctement déroulé, False le cas échéant
+     */
     @Override
     public boolean addProduit(String nom, double prix, int qte) {
         Produit p = new Produit(nom, prix, qte);
@@ -40,9 +58,16 @@ public class Catalogue implements I_Catalogue {
         return true;
     }
 
+    /**
+     * Ajoute une liste de produit au catalogue
+     *
+     * @param listeProduits La liste des produits que l'on souhaite ajouter
+     *
+     * @return Le nombre de produits ajoutés
+     */
     @Override
-    public int addProduits(List<I_Produit> l) {
-        Iterator i = l.iterator();
+    public int addProduits(List<I_Produit> listeProduits) {
+        Iterator i = listeProduits.iterator();
         int nb = 0;
         while (i.hasNext()) {
             if (this.addProduit((I_Produit) i.next())) nb++;
@@ -50,26 +75,88 @@ public class Catalogue implements I_Catalogue {
         return nb;
     }
 
+    /**
+     * Cherche si le nom d'un produit figure dans le catalogue et le retire si c'est le cas.
+     *
+     * @param nom Le nom du produit à retirer
+     *
+     * @return True si le produit a été retirer, False dans le cas échéant.
+     */
     @Override
     public boolean removeProduit(String nom) {
+        for (I_Produit i_produit : productList) {
+            if (i_produit.getNom().equals(nom)) {
+                this.productList.remove(i_produit);
+                return true;
+            }
+        }
         return false;
     }
 
+    /**
+     * Essaye d'ajouter une quantité de produits au stock d'un type produit de nom donné.
+     *
+     * @param nomProduit Le nom du produit auquel on veut ajouter du stock
+     * @param qteAchetee La quantitée à ajouter
+     *
+     * @return True si l'action s'est correctement effectuée, False le cas échéant
+     *
+     * @throws ValeurNegativeException
+     */
     @Override
-    public boolean acheterStock(String nomProduit, int qteAchetee) {
+    public boolean acheterStock(String nomProduit, int qteAchetee) throws ValeurNegativeException {
+        for (I_Produit i_produit : productList) {
+            if (i_produit.getNom().equals(nomProduit)) {
+                i_produit.ajouter(qteAchetee);
+                return true;
+            }
+        }
         return false;
     }
 
+    /**
+     * Essaye d'enlever une quantité de produits au stock d'un type produit de nom donné.
+     *
+     * @param nomProduit Le nom du produit auquel on veut enlever du stock
+     * @param qteVendue  La quantitée à enlever
+     *
+     * @return True si l'action s'est correctement effectuée, False le cas échéant
+     *
+     * @throws ValeurNegativeException
+     */
     @Override
-    public boolean vendreStock(String nomProduit, int qteVendue) {
+    public boolean vendreStock(String nomProduit, int qteVendue) throws ValeurNegativeException {
+        for (I_Produit i_produit : productList) {
+            if (i_produit.getNom().equals(nomProduit)) {
+                i_produit.enlever(qteVendue);
+                return true;
+            }
+        }
         return false;
     }
 
+    /**
+     * Récupère le nom de tous les produits du catalogue
+     *
+     * @return Un tableau contenant le nom des produits
+     */
     @Override
     public String[] getNomProduits() {
-        return new String[0];
+        String[] lesProduits = new String[productList.size()];
+        int compteur = 0;
+
+        for (I_Produit i_produit : productList) {
+            lesProduits[compteur] = i_produit.getNom();
+            compteur++;
+        }
+        return lesProduits;
     }
 
+    /**
+     * Retourne le montant TTC du catalogue (Somme des stocks des produits TTC)
+     *
+     * @return Le montant Total du catalogue TTC
+     */
     @Override
     public double getMontantTotalTTC() {
         double total = 0.0;
@@ -81,11 +168,19 @@ public class Catalogue implements I_Catalogue {
         return total;
     }
 
+    /**
+     * Réinitialise le catalogue en retirant tous les produits qui le constitue.
+     */
     @Override
     public void clear() {
-
+        this.productList.clear();
     }
 
+    /**
+     * Formatte l'affichage d'un catalogue et affiche donc les produits contenus dans ce dernier si il y en a.
+     *
+     * @return La chaîne formatée OU "Aucun produit dans le catalogue"
+     */
     @Override
     public String toString() {
         String resp = "";

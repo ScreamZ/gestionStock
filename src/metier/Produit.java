@@ -93,7 +93,7 @@ public class Produit implements I_Produit {
     }
 
     /**
-     * Calcule le prix TTC pour le produit (hors taxe multiplié par la TVA).
+     * Calcule le prix TTC pour le produit (montant hors taxe multiplié par la TVA).
      *
      * @return le prix TTC
      */
@@ -103,7 +103,7 @@ public class Produit implements I_Produit {
     }
 
     /**
-     * Calcule la valeur TTC du stock
+     * Calcule la valeur TTC du stock (quantité du stock multiplié par le prixUnitaireTTC)
      *
      * @return La valeur TTC de l'intégralité du stock
      */
@@ -112,6 +112,11 @@ public class Produit implements I_Produit {
         return getPrixUnitaireTTC() * quantiteStock;
     }
 
+    /**
+     * Formatte l'affichage d'un produit
+     *
+     * @return String la chaine formatée
+     */
     @Override
     public String toString() {
         return nom + "\t PrixHT : " + prixUnitaireHT + "\t PrixTTC : " + getPrixUnitaireTTC() + " \t QuantitéStock : " + quantiteStock;

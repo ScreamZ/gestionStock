@@ -11,6 +11,6 @@ public class ValeurNegativeException extends Exception {
      * call to {@link #initCause}.
      */
     public ValeurNegativeException() {
-        System.err.println("Vous ne pouvez pas ajouter une valeur égale à 0 ou négative");
+        System.err.println("");
     }
 }

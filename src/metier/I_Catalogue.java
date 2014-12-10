@@ -1,5 +1,7 @@
 package metier;
 
+import metier.exceptions.ValeurNegativeException;
+
 import java.util.List;
 
 public interface I_Catalogue {
@@ -8,8 +10,10 @@ public interface I_Catalogue {
 	public abstract boolean addProduit(String nom, double prix, int qte);
 	public abstract int addProduits(List<I_Produit> l);
 	public abstract boolean removeProduit(String nom);
-	public abstract boolean acheterStock(String nomProduit, int qteAchetee);
-	public abstract boolean vendreStock(String nomProduit, int qteVendue);
+
+	public abstract boolean acheterStock(String nomProduit, int qteAchetee) throws ValeurNegativeException;
+
+	public abstract boolean vendreStock(String nomProduit, int qteVendue) throws ValeurNegativeException;
 	public abstract String[] getNomProduits();
 	public abstract double getMontantTotalTTC();
 	public abstract String toString();

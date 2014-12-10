@@ -29,6 +29,6 @@ public class EtatStockControleur {
      * @return String La chaine formatée
      */
     public String getEtatStocks() {
-        return this.catalogue.toString() + "\r\nMontant total TTC :" + this.catalogue.getMontantTotalTTC();
+        return this.catalogue.toString() + "\r\nMontant total TTC : " + this.catalogue.getMontantTotalTTC();
     }
 }
