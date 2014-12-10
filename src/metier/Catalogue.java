@@ -36,7 +36,7 @@ public class Catalogue implements I_Catalogue {
      */
     @Override
     public boolean addProduit(I_Produit produit) { // TODO Ajouter la gestion d'une exception si le produit existe
-        if (this.productList.indexOf(produit) >= 0)
+        if (this.productList.indexOf(produit) >= 0 && produit != null)
             return false;
         this.productList.add(produit);
         return true;
@@ -67,6 +67,7 @@ public class Catalogue implements I_Catalogue {
      */
     @Override
     public int addProduits(List<I_Produit> listeProduits) {
+    	if(listeProduits == null) return 0;
         Iterator i = listeProduits.iterator();
         int nb = 0;
         while (i.hasNext()) {
