@@ -43,7 +43,7 @@ public class Catalogue implements I_Catalogue {
             if (i_produit.getNom().equals(produit.getNom())) return false;
         }
 
-        if (produit.getPrixUnitaireHT() <= 0) return false;
+        if (produit.getPrixUnitaireHT() < 0) return false;
         this.productList.add(produit);
         return true;
     }
@@ -82,7 +82,7 @@ public class Catalogue implements I_Catalogue {
         int nb = 0;
         while (i.hasNext()) {
             I_Produit p = (I_Produit) i.next();
-            if (p.getPrixUnitaireHT() > 0 && p.getQuantite() > 0) {
+            if (p.getPrixUnitaireHT() > 0 && p.getQuantite() >= 0) {
                 if (this.addProduit(p)) nb++;
             }
         }
@@ -117,6 +117,8 @@ public class Catalogue implements I_Catalogue {
      */
     @Override
     public boolean acheterStock(String nomProduit, int qteAchetee) {
+        if (qteAchetee <= 0) return false;
+
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(nomProduit)) {
                 try {
