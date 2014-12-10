@@ -114,10 +114,7 @@ public class Produit implements I_Produit {
 
     @Override
     public String toString() {
-        return "Produit{" +
-                "quantiteStock=" + quantiteStock +
-                ", nom='" + nom + '\'' +
-                ", prixUnitaireHT=" + prixUnitaireHT +
-                '}';
+        return nom + "\t PrixHT : " + prixUnitaireHT + "\t PrixTTC : " + getPrixUnitaireTTC() + " \t QuantitéStock : " + quantiteStock;
+
     }
 }

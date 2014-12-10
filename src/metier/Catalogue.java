@@ -35,7 +35,7 @@ public class Catalogue implements I_Catalogue {
 
     @Override
     public boolean addProduit(String nom, double prix, int qte) {
-        Produit p = new Produit(nom, (float) prix, qte);
+        Produit p = new Produit(nom, prix, qte);
         this.addProduit(p);
         return true;
     }
@@ -72,11 +72,28 @@ public class Catalogue implements I_Catalogue {
 
     @Override
     public double getMontantTotalTTC() {
-        return 0;
+        double total = 0.0;
+
+        for (I_Produit i_produit : productList) {
+            total += i_produit.getPrixStockTTC();
+        }
+
+        return total;
     }
 
     @Override
     public void clear() {
 
+    }
+
+    @Override
+    public String toString() {
+        String resp = "";
+        if (productList.size() == 0) return "Aucun produit dans le catalogue\r\n";
+
+        for (I_Produit i_produit : productList) {
+            resp += i_produit.toString() + "\r\n";
+        }
+        return resp;
     }
 }
