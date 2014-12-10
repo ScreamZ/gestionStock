@@ -2,11 +2,7 @@ package metier;
 
 import metier.exceptions.ValeurNegativeException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Project : GestionStock
@@ -46,6 +42,7 @@ public class Catalogue implements I_Catalogue {
         }
 
         if (produit.getPrixUnitaireHT() <= 0) return false;
+        if (produit.getQuantite() < 0) return false;
         this.productList.add(produit);
         return true;
     }
@@ -84,7 +81,7 @@ public class Catalogue implements I_Catalogue {
         int nb = 0;
         while (i.hasNext()) {
             I_Produit p = (I_Produit) i.next();
-            if (p.getPrixUnitaireHT() > 0 && p.getQuantite() > 0) {
+            if (p.getPrixUnitaireHT() > 0 && p.getQuantite() >= 0) {
                 if (this.addProduit(p)) nb++;
             }
         }
@@ -119,6 +116,8 @@ public class Catalogue implements I_Catalogue {
      */
     @Override
     public boolean acheterStock(String nomProduit, int qteAchetee) {
+        if (qteAchetee <= 0) return false;
+
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(nomProduit)) {
                 try {
@@ -167,7 +166,7 @@ public class Catalogue implements I_Catalogue {
     public String[] getNomProduits() {
         String[] lesProduits = new String[productList.size()];
         int compteur = 0;
-        
+
         Collections.sort(productList, new Comparator<I_Produit>() {
             public int compare(I_Produit p1, I_Produit p2) {
                 return p1.getNom().compareTo(p2.getNom());
