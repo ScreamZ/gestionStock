@@ -1,26 +1,13 @@
 package application;
 
-import metier.Catalogue;
-import metier.I_Catalogue;
-
 /**
  * <strong>EtatStockControleur</strong>
  *
  * <p>Permet de gérer les stocks de produits.</p>
  */
-public class EtatStockControleur {
+public class EtatStockControleur extends BaseControleur {
 
-    private static EtatStockControleur instance = null;
-    private I_Catalogue catalogue;
-
-    private EtatStockControleur() {
-        this.catalogue = Catalogue.getInstance();
-    }
-
-    public static EtatStockControleur getControleur() {
-        if (instance == null) instance = new EtatStockControleur();
-
-        return instance;
+    public EtatStockControleur() {
     }
 
     /**

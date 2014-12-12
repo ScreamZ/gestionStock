@@ -1,7 +1,5 @@
 package application;
 
-import metier.Catalogue;
-import metier.I_Catalogue;
 import metier.I_Produit;
 import metier.Produit;
 
@@ -10,19 +8,9 @@ import metier.Produit;
  *
  * <p>Permet de gérer l'ajout, la suppression et la modification des produits.</p>
  */
-public class CRUDProduitControleur {
+public class CRUDProduitControleur extends BaseControleur {
 
-    private static CRUDProduitControleur instance = null;
-    private I_Catalogue catalogue;
-
-    private CRUDProduitControleur() {
-        this.catalogue = Catalogue.getInstance();
-    }
-
-    public static CRUDProduitControleur getControleur() {
-        if (instance == null) instance = new CRUDProduitControleur();
-
-        return instance;
+    public CRUDProduitControleur() {
     }
 
     /**
