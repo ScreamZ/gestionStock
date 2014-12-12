@@ -217,7 +217,7 @@ public class Catalogue implements I_Catalogue {
     @Override
     public String toString() {
         String resp = "";
-        if (productList.size() == 0) return "Aucun produit dans le catalogue\r\n";
+        if (productList.size() == 0) return "\nMontant total TTC du stock : 0,00 €";
 
         for (I_Produit i_produit : productList) {
             resp += i_produit.toString() + "\r\n";
