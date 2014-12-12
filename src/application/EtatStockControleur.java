@@ -7,15 +7,12 @@ package application;
  */
 public class EtatStockControleur extends BaseControleur {
 
-    public EtatStockControleur() {
-    }
-
     /**
      * Renvoie une chaine formatée permettant de montrer l'état des stocks et le stock total en valeur.
      *
      * @return String La chaine formatée
      */
     public String getEtatStocks() {
-        return this.catalogue.toString() + "\r\nMontant total TTC : " + this.catalogue.getMontantTotalTTC();
+        return this.catalogue.toString();
     }
 }

@@ -19,7 +19,6 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 //	public FenetreNouveauProduit(String[] lesCategories) {
 public FenetreNouveauProduit() {
 
-    controleur = CRUDProduitControleur.getControleur();
     setTitle("Creation Produit");
     setBounds(500, 500, 200, 250);
 		Container contentPane = getContentPane();

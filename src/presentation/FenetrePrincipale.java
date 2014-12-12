@@ -1,7 +1,5 @@
 package presentation;
 
-import application.EtatStockControleur;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -84,7 +82,6 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 //		String[] tabCategories = new String[] {"Bio", "Luxe" };
 
 		if (e.getSource() == btAfficher)
-			new FenetreAffichage(EtatStockControleur.getControleur().getEtatStocks());
 		if (e.getSource() == btNouveauProduit)
 //			new FenetreNouveauProduit(tabCategories);
 			new FenetreNouveauProduit();
