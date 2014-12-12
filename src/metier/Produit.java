@@ -89,7 +89,8 @@ public class Produit implements I_Produit {
 
     @Override
     public double getPrixUnitaireHT() {
-        return this.prixUnitaireHT;
+        return Math.round(prixUnitaireHT * 100.0) / 100.0;
+
     }
 
     /**
@@ -119,7 +120,6 @@ public class Produit implements I_Produit {
      */
     @Override
     public String toString() {
-        return nom + "\t PrixHT : " + prixUnitaireHT + "\t PrixTTC : " + getPrixUnitaireTTC() + " \t QuantitéStock : " + quantiteStock;
-
+        return nom + " - Prix HT : " + prixUnitaireHT + " € prix TTC : " + getPrixUnitaireTTC() + " € quantité en stock : " + quantiteStock + "\n";
     }
 }
