@@ -1,5 +1,10 @@
 package presentation;
 
+import application.AchatVenteControleur;
+import application.BaseControleur;
+import application.CRUDProduitControleur;
+import application.EtatStockControleur;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +17,9 @@ import java.awt.event.WindowListener;
 public class FenetrePrincipale extends JFrame implements ActionListener,
 		WindowListener {
 
+	private BaseControleur etatStockControleur;
+	private BaseControleur crudControleur;
+	private BaseControleur achatVenteControleur;
 	private JButton btAfficher;
 	private JButton btNouveauProduit;
 	private JButton btSupprimerProduit;
@@ -23,7 +31,11 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 
 	
 	public FenetrePrincipale() {
-		
+
+
+		this.achatVenteControleur = new AchatVenteControleur();
+		this.crudControleur = new CRUDProduitControleur();
+		this.etatStockControleur = new EtatStockControleur();
 		setTitle("exercice Produits");
 		setBounds(500, 500, 320, 250);
 		JPanel panAffichage = new JPanel();
