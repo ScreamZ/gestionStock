@@ -2,6 +2,8 @@ package metier;
 
 import metier.exceptions.ValeurNegativeException;
 
+import java.text.DecimalFormat;
+
 /**
  * <strong>Produit</strong>
  * <p/>
@@ -120,6 +122,7 @@ public class Produit implements I_Produit {
      */
     @Override
     public String toString() {
-        return nom + " - Prix HT : " + prixUnitaireHT + " € prix TTC : " + getPrixUnitaireTTC() + " € quantité en stock : " + quantiteStock + "\n";
+        DecimalFormat df = new DecimalFormat("#.00");
+        return nom + " - prix HT : " + df.format(prixUnitaireHT) + " € - prix TTC : " + df.format(getPrixUnitaireTTC()) + " € - quantité en stock : " + quantiteStock;
     }
 }

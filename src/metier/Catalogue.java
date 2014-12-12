@@ -2,6 +2,7 @@ package metier;
 
 import metier.exceptions.ValeurNegativeException;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -220,8 +221,11 @@ public class Catalogue implements I_Catalogue {
         if (productList.size() == 0) return "\nMontant total TTC du stock : 0,00 €";
 
         for (I_Produit i_produit : productList) {
-            resp += i_produit.toString() + "\r\n";
+            resp += i_produit.toString() + "\n";
         }
+        DecimalFormat df = new DecimalFormat("#.00");
+        resp += "\nMontant total TTC du stock : " + df.format(this.getMontantTotalTTC()) + " €";
+
         return resp;
     }
 }
