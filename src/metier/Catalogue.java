@@ -143,7 +143,6 @@ public class Catalogue implements I_Catalogue {
      *
      * @return True si l'action s'est correctement effectuée, False le cas échéant
      *
-     * @throws ValeurNegativeException
      */
     @Override
     public boolean vendreStock(String nomProduit, int qteVendue) {
