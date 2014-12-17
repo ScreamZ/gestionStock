@@ -15,4 +15,13 @@ public class EtatStockControleur extends BaseControleur {
     public String getEtatStocks() {
         return this.catalogue.toString();
     }
+
+    /**
+     * Renvoie la liste des produits actuellement créés
+     *
+     * @return La liste des produits
+     */
+    public String[] getProduitListe() {
+        return this.catalogue.getNomProduits();
+    }
 }

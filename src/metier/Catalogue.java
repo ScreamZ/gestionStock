@@ -222,7 +222,7 @@ public class Catalogue implements I_Catalogue {
         for (I_Produit i_produit : productList) {
             resp += i_produit.toString() + "\n";
         }
-        DecimalFormat df = new DecimalFormat("#.00");
+        DecimalFormat df = new DecimalFormat("0.00");
         resp += "\nMontant total TTC du stock : " + df.format(this.getMontantTotalTTC()) + " €";
 
         return resp;

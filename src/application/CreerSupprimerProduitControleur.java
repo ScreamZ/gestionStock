@@ -4,11 +4,11 @@ import metier.I_Produit;
 import metier.Produit;
 
 /**
- * <strong>CRUDProduitControleur</strong>
+ * <strong>CreerSupprimerProduitControleur</strong>
  *
  * <p>Permet de gérer l'ajout, la suppression et la modification des produits.</p>
  */
-public class CRUDProduitControleur extends BaseControleur {
+public class CreerSupprimerProduitControleur extends BaseControleur {
 
     /**
      * Créer un produit et l'ajoute au catalogue
