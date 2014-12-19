@@ -1,5 +1,3 @@
-package metier.tests;
-
 import metier.Catalogue;
 import metier.I_Catalogue;
 import metier.I_Produit;
