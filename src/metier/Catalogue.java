@@ -1,6 +1,6 @@
 package metier;
 
-import metier.exceptions.ValeurNegativeException;
+import metier.DAO.ProduitDAOFactory;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -16,7 +16,12 @@ public class Catalogue implements I_Catalogue {
     private ArrayList<I_Produit> productList;
 
     private Catalogue() {
-        this.productList = new ArrayList<I_Produit>();
+        try {
+            this.productList = new ArrayList<I_Produit>();
+            this.productList.addAll(ProduitDAOFactory.create("SQL").findAll());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static Catalogue getInstance() {
@@ -44,8 +49,14 @@ public class Catalogue implements I_Catalogue {
 
         if (produit.getPrixUnitaireHT() <= 0) return false;
         if (produit.getQuantite() < 0) return false;
-        this.productList.add(produit);
-        return true;
+        try {
+            this.productList.add(produit);
+            ProduitDAOFactory.create("SQL").create(produit);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
@@ -67,8 +78,14 @@ public class Catalogue implements I_Catalogue {
 
         if (p.getPrixUnitaireHT() <= 0) return false;
         if (p.getQuantite() < 0) return false;
-        this.addProduit(p);
-        return true;
+        try {
+            this.addProduit(p);
+            ProduitDAOFactory.create("SQL").create(p);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
@@ -86,7 +103,16 @@ public class Catalogue implements I_Catalogue {
         while (i.hasNext()) {
             I_Produit p = (I_Produit) i.next();
             if (p.getPrixUnitaireHT() > 0 && p.getQuantite() >= 0) {
-                if (this.addProduit(p)) nb++;
+
+                if (this.addProduit(p)) {
+                    try {
+                        ProduitDAOFactory.create("SQL").create(p);
+                        nb++;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return 0;
+                    }
+                }
             }
         }
         return nb;
@@ -103,8 +129,14 @@ public class Catalogue implements I_Catalogue {
     public boolean removeProduit(String nom) {
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(nom)) {
-                this.productList.remove(i_produit);
-                return true;
+                try {
+                    ProduitDAOFactory.create("SQL").delete(i_produit);
+                    this.productList.remove(i_produit);
+                    return true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
             }
         }
         return false;
@@ -126,7 +158,8 @@ public class Catalogue implements I_Catalogue {
             if (i_produit.getNom().equals(nomProduit)) {
                 try {
                     i_produit.ajouter(qteAchetee);
-                } catch (ValeurNegativeException e) {
+                    ProduitDAOFactory.create("SQL").update(i_produit);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 return true;
@@ -142,7 +175,6 @@ public class Catalogue implements I_Catalogue {
      * @param qteVendue  La quantitée à enlever
      *
      * @return True si l'action s'est correctement effectuée, False le cas échéant
-     *
      */
     @Override
     public boolean vendreStock(String nomProduit, int qteVendue) {
@@ -153,7 +185,8 @@ public class Catalogue implements I_Catalogue {
                 try {
                     if (i_produit.getQuantite() < qteVendue) return false;
                     i_produit.enlever(qteVendue);
-                } catch (ValeurNegativeException e) {
+                    ProduitDAOFactory.create("SQL").update(i_produit);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 return true;
