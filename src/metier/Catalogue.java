@@ -13,11 +13,11 @@ import java.util.*;
 public class Catalogue implements I_Catalogue {
 
     private static Catalogue c = null;
-    private ArrayList<I_Produit> productList;
+    private List<I_Produit> productList;
 
     private Catalogue() {
         try {
-            this.productList = new ArrayList<I_Produit>();
+            this.productList = new ArrayList<>();
             this.productList.addAll(ProduitDAOFactory.create("SQL").findAll());
         } catch (Exception e) {
             e.printStackTrace();
