@@ -12,23 +12,24 @@ import java.util.*;
  */
 public class Catalogue implements I_Catalogue {
 
-    private static Catalogue c = null;
-    private ArrayList<I_Produit> productList;
+    private String nom;
+    private List<I_Produit> productList;
 
     private Catalogue() {
         try {
-            this.productList = new ArrayList<I_Produit>();
+            this.productList = new ArrayList<>();
             this.productList.addAll(ProduitDAOFactory.create("SQL").findAll());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static Catalogue getInstance() {
+    public String getNom() {
+        return nom;
+    }
 
-        if (Catalogue.c == null) Catalogue.c = new Catalogue();
-
-        return Catalogue.c;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     /**
