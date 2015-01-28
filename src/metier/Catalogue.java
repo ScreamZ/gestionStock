@@ -13,12 +13,13 @@ import java.util.*;
 public class Catalogue implements I_Catalogue {
 
     private static Catalogue c = null;
+    private final String SAVE_STRATEGY = "SQL"; // SQL or XML
     private List<I_Produit> productList;
 
     private Catalogue() {
         try {
             this.productList = new ArrayList<>();
-            this.productList.addAll(ProduitDAOFactory.create("SQL").findAll());
+            this.productList.addAll(ProduitDAOFactory.create(SAVE_STRATEGY).findAll());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,7 +52,7 @@ public class Catalogue implements I_Catalogue {
         if (produit.getQuantite() < 0) return false;
         try {
             this.productList.add(produit);
-            ProduitDAOFactory.create("SQL").create(produit);
+            ProduitDAOFactory.create(SAVE_STRATEGY).create(produit);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,7 +81,7 @@ public class Catalogue implements I_Catalogue {
         if (p.getQuantite() < 0) return false;
         try {
             this.addProduit(p);
-            ProduitDAOFactory.create("SQL").create(p);
+            ProduitDAOFactory.create(SAVE_STRATEGY).create(p);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,7 +107,7 @@ public class Catalogue implements I_Catalogue {
 
                 if (this.addProduit(p)) {
                     try {
-                        ProduitDAOFactory.create("SQL").create(p);
+                        ProduitDAOFactory.create(SAVE_STRATEGY).create(p);
                         nb++;
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -130,7 +131,7 @@ public class Catalogue implements I_Catalogue {
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(nom)) {
                 try {
-                    ProduitDAOFactory.create("SQL").delete(i_produit);
+                    ProduitDAOFactory.create(SAVE_STRATEGY).delete(i_produit);
                     this.productList.remove(i_produit);
                     return true;
                 } catch (Exception e) {
@@ -158,7 +159,7 @@ public class Catalogue implements I_Catalogue {
             if (i_produit.getNom().equals(nomProduit)) {
                 try {
                     i_produit.ajouter(qteAchetee);
-                    ProduitDAOFactory.create("SQL").update(i_produit);
+                    ProduitDAOFactory.create(SAVE_STRATEGY).update(i_produit);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -185,7 +186,7 @@ public class Catalogue implements I_Catalogue {
                 try {
                     if (i_produit.getQuantite() < qteVendue) return false;
                     i_produit.enlever(qteVendue);
-                    ProduitDAOFactory.create("SQL").update(i_produit);
+                    ProduitDAOFactory.create(SAVE_STRATEGY).update(i_produit);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
