@@ -29,14 +29,14 @@ public class ProduitDAO_Oracle implements ProduitDAO {
     /**
      * Méthode de création
      *
-     * @param obj L'le produit à créer
+     * @param obj Le produit à créer
      *
      * @return boolean
      */
     @Override
     public boolean create(I_Produit obj) {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("INSERT INTO Produits VALUES ('',?,?,?)");
+            CallableStatement statement = this.connection.prepareCall("{CALL NOUVEAUPRODUIT(?,?,?)}");
             statement.setString(1, obj.getNom());
             statement.setInt(2, obj.getQuantite());
             statement.setDouble(3, obj.getPrixUnitaireHT());
@@ -57,7 +57,7 @@ public class ProduitDAO_Oracle implements ProduitDAO {
     @Override
     public boolean delete(I_Produit obj) {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("DELETE FROM Produits WHERE nom = ?");
+            PreparedStatement statement = this.connection.prepareStatement("DELETE FROM Produit WHERE nom = ?");
             statement.setString(1, obj.getNom());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -76,7 +76,7 @@ public class ProduitDAO_Oracle implements ProduitDAO {
     @Override
     public boolean update(I_Produit obj) {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("UPDATE Produits SET quantite = ? WHERE nom = ?");
+            PreparedStatement statement = this.connection.prepareStatement("UPDATE Produit SET quantite = ? WHERE nom = ?");
             statement.setInt(1, obj.getQuantite());
             statement.setString(2, obj.getNom());
             return statement.executeUpdate() > 0;
@@ -96,7 +96,7 @@ public class ProduitDAO_Oracle implements ProduitDAO {
     @Override
     public I_Produit find(String nom) {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM Produits WHERE nom = ?");
+            PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM Produit WHERE nom = ?");
             statement.setString(1, nom);
             ResultSet rs = statement.executeQuery();
             if (!rs.next()) {
@@ -121,7 +121,7 @@ public class ProduitDAO_Oracle implements ProduitDAO {
     @Override
     public List<I_Produit> findAll() {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM Produits");
+            PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM Produit");
             ResultSet rs = statement.executeQuery();
             List<I_Produit> list = null;
             if (rs.next()) { // Checks for any results and moves cursor to first row,

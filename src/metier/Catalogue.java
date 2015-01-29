@@ -13,13 +13,16 @@ import java.util.*;
 public class Catalogue implements I_Catalogue {
 
     private static Catalogue c = null;
-    private final String SAVE_STRATEGY = "SQL"; // SQL or XML
+    private final String SAVE_STRATEGY = "oracle"; // oracle or XML
     private List<I_Produit> productList;
 
     private Catalogue() {
         try {
             this.productList = new ArrayList<>();
-            this.productList.addAll(ProduitDAOFactory.create(SAVE_STRATEGY).findAll());
+            List<I_Produit> datas = ProduitDAOFactory.create(SAVE_STRATEGY).findAll();
+            if (datas != null) {
+                this.productList.addAll(datas);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
