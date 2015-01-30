@@ -1,7 +1,7 @@
 package metier.DAO;
 
 import metier.I_Produit;
-import metier.Produit;
+import metier.ProduitFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -103,7 +103,7 @@ public class ProduitDAO_Oracle implements ProduitDAO {
                 rs.close();
                 return null;
             } else {
-                I_Produit p = new Produit(rs.getString("nom"), rs.getDouble("prix_unitaire_ht"), rs.getInt("quantite"));
+                I_Produit p = ProduitFactory.createProduit(rs.getString("nom"), rs.getDouble("prix_unitaire_ht"), rs.getInt("quantite"));
                 rs.close();
                 return p;
             }
@@ -127,7 +127,7 @@ public class ProduitDAO_Oracle implements ProduitDAO {
             if (rs.next()) { // Checks for any results and moves cursor to first row,
                 list = new ArrayList<>();
                 do {
-                    list.add(new Produit(rs.getString("nom"), rs.getDouble("prix_unitaire_ht"), rs.getInt("quantite")));
+                    list.add(ProduitFactory.createProduit(rs.getString("nom"), rs.getDouble("prix_unitaire_ht"), rs.getInt("quantite")));
                 } while (rs.next());
             }
             rs.close();

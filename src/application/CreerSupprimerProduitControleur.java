@@ -1,7 +1,7 @@
 package application;
 
 import metier.I_Produit;
-import metier.Produit;
+import metier.ProduitFactory;
 
 /**
  * <strong>CreerSupprimerProduitControleur</strong>
@@ -20,7 +20,7 @@ public class CreerSupprimerProduitControleur extends BaseControleur {
      * @return Produit Le produit créer
      */
     public I_Produit ajouterProduit(String nom, double prixHT, int qte) {
-        Produit produit = new Produit(nom, prixHT, qte);
+        I_Produit produit = ProduitFactory.createProduit(nom, prixHT, qte);
         this.catalogue.addProduit(produit);
         return produit;
     }
