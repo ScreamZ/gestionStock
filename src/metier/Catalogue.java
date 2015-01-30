@@ -74,7 +74,7 @@ public class Catalogue implements I_Catalogue {
      */
     @Override
     public boolean addProduit(String nom, double prix, int qte) {
-        Produit p = new Produit(nom, prix, qte);
+        I_Produit p = ProduitFactory.createProduit(nom, prix, qte);
 
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(p.getNom())) return false;
