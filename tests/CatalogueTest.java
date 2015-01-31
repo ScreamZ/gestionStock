@@ -1,7 +1,8 @@
-import metier.Catalogue;
-import metier.I_Catalogue;
-import metier.I_Produit;
-import metier.Produit;
+import metier.DAO.AbstractDAOFactory;
+import metier.beans.Catalogue;
+import metier.beans.I_Catalogue;
+import metier.beans.I_Produit;
+import metier.beans.Produit;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ public class CatalogueTest {
 
     @Before
     public void setUp() {
-        cat = Catalogue.getInstance();
+        AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.ORACLE).getCatalogueDAO().find("test");
 //		Si votre Catalogue est un Singleton, il faut changer la ligne précédente puis vider le Catalogue avec la méthode clear() comme indiqué à la ligne suivante
         cat.clear();
     }

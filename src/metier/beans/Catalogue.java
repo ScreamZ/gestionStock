@@ -1,6 +1,7 @@
-package metier;
+package metier.beans;
 
-import metier.DAO.ProduitDAOFactory;
+import metier.DAO.AbstractDAOFactory;
+import metier.DAO.types.produit.ProduitDAO;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -12,14 +13,19 @@ import java.util.*;
  */
 public class Catalogue implements I_Catalogue {
 
-    private final String SAVE_STRATEGY = "SQL"; // SQL or XML
+    private final int SAVE_STRATEGY = AbstractDAOFactory.ORACLE; // Any constant from AbstractDAOFactory class
     private String nom;
     private List<I_Produit> productList;
 
-    private Catalogue() {
+    public Catalogue(String nom) {
         try {
+            if (AbstractDAOFactory.getDAOFactory(SAVE_STRATEGY).getCatalogueDAO().find(nom) != null) {
+                throw new Exception("Already Exist catalogue named : " + nom);
+            }
+
+            this.nom = nom;
             this.productList = new ArrayList<>();
-            this.productList.addAll(ProduitDAOFactory.create(SAVE_STRATEGY).findAll());
+            this.productList.addAll(AbstractDAOFactory.getDAOFactory(SAVE_STRATEGY).getCatalogueDAO().findProduitsForCatalogue(nom));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -27,10 +33,6 @@ public class Catalogue implements I_Catalogue {
 
     public String getNom() {
         return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
     }
 
     /**
@@ -41,7 +43,7 @@ public class Catalogue implements I_Catalogue {
      * @return True si l'ajout c'est correctement effectué, False le cas échéant
      */
     @Override
-    public boolean addProduit(I_Produit produit) { // TODO Ajouter la gestion d'une exception si le produit existe
+    public boolean addProduit(I_Produit produit) {
         if (produit == null)
             return false;
 
@@ -53,7 +55,7 @@ public class Catalogue implements I_Catalogue {
         if (produit.getQuantite() < 0) return false;
         try {
             this.productList.add(produit);
-            ProduitDAOFactory.create(SAVE_STRATEGY).create(produit);
+            getProduitDAO().create(produit);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,7 +74,7 @@ public class Catalogue implements I_Catalogue {
      */
     @Override
     public boolean addProduit(String nom, double prix, int qte) {
-        Produit p = new Produit(nom, prix, qte);
+        I_Produit p = ProduitFactory.createProduit(nom, prix, qte);
 
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(p.getNom())) return false;
@@ -82,7 +84,7 @@ public class Catalogue implements I_Catalogue {
         if (p.getQuantite() < 0) return false;
         try {
             this.addProduit(p);
-            ProduitDAOFactory.create(SAVE_STRATEGY).create(p);
+            getProduitDAO().create(p);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,11 +106,12 @@ public class Catalogue implements I_Catalogue {
         int nb = 0;
         while (i.hasNext()) {
             I_Produit p = (I_Produit) i.next();
+            p = ProduitFactory.createProduit(p.getNom(), p.getPrixUnitaireHT(), p.getQuantite());
             if (p.getPrixUnitaireHT() > 0 && p.getQuantite() >= 0) {
 
                 if (this.addProduit(p)) {
                     try {
-                        ProduitDAOFactory.create(SAVE_STRATEGY).create(p);
+                        getProduitDAO().create(p);
                         nb++;
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -118,6 +121,11 @@ public class Catalogue implements I_Catalogue {
             }
         }
         return nb;
+    }
+
+    @Override
+    public List<I_Produit> getProduitsList() {
+        return this.productList;
     }
 
     /**
@@ -132,7 +140,7 @@ public class Catalogue implements I_Catalogue {
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(nom)) {
                 try {
-                    ProduitDAOFactory.create(SAVE_STRATEGY).delete(i_produit);
+                    getProduitDAO().delete(i_produit);
                     this.productList.remove(i_produit);
                     return true;
                 } catch (Exception e) {
@@ -160,7 +168,7 @@ public class Catalogue implements I_Catalogue {
             if (i_produit.getNom().equals(nomProduit)) {
                 try {
                     i_produit.ajouter(qteAchetee);
-                    ProduitDAOFactory.create(SAVE_STRATEGY).update(i_produit);
+                    getProduitDAO().update(i_produit);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -169,6 +177,7 @@ public class Catalogue implements I_Catalogue {
         }
         return false;
     }
+
 
     /**
      * Essaye d'enlever une quantité de produits au stock d'un type produit de nom donné.
@@ -187,7 +196,7 @@ public class Catalogue implements I_Catalogue {
                 try {
                     if (i_produit.getQuantite() < qteVendue) return false;
                     i_produit.enlever(qteVendue);
-                    ProduitDAOFactory.create(SAVE_STRATEGY).update(i_produit);
+                    getProduitDAO().update(i_produit);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -261,5 +270,14 @@ public class Catalogue implements I_Catalogue {
         resp += "\nMontant total TTC du stock : " + df.format(this.getMontantTotalTTC()) + " €";
 
         return resp;
+    }
+
+    /**
+     * Return the factory instance
+     *
+     * @return Te factory instance
+     */
+    private ProduitDAO getProduitDAO() {
+        return AbstractDAOFactory.getDAOFactory(SAVE_STRATEGY).getProduitDAO();
     }
 }

@@ -31,9 +31,9 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
     public FenetrePrincipale() {
 
 
-        this.achatVenteControleur = new AchatVenteControleur();
-        this.creerSupprimerProduitControleur = new CreerSupprimerProduitControleur();
-        this.etatStockControleur = new EtatStockControleur();
+        this.achatVenteControleur = AchatVenteControleur.getInstance();
+        this.creerSupprimerProduitControleur = CreerSupprimerProduitControleur.getInstance();
+        this.etatStockControleur = EtatStockControleur.getInstance();
         setTitle("exercice Produits");
         setBounds(500, 500, 320, 250);
         JPanel panAffichage = new JPanel();

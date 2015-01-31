@@ -1,4 +1,4 @@
-package metier;
+package metier.beans;
 
 import metier.exceptions.ValeurNegativeException;
 
@@ -28,10 +28,29 @@ public class Produit implements I_Produit {
      */
     private double prixUnitaireHT;
 
+    private I_Catalogue catalogue = null;
+
+    /**
+     * Adpatateur pour l'instanciation temporaire de produits
+     *
+     * @param nom            le nom
+     * @param prixUnitaireHT le prix UHT
+     * @param qte            la quantité en stock
+     *
+     * @deprecated A n'utiliser seulement que pour la compatibilité, l'objet instancié doit automatiquement être re-conçu via la factory afin de disposer d'un catalogue non null
+     */
     public Produit(String nom, double prixUnitaireHT, int qte) {
+        this.nom = nom;
+        this.prixUnitaireHT = prixUnitaireHT;
+        this.quantiteStock = qte;
+
+    }
+
+    public Produit(String nom, double prixUnitaireHT, int qte, I_Catalogue catalogue) {
         this.quantiteStock = qte;
         this.nom = nom;
         this.prixUnitaireHT = prixUnitaireHT;
+        this.catalogue = catalogue;
     }
 
     /**
@@ -124,5 +143,10 @@ public class Produit implements I_Produit {
     public String toString() {
         DecimalFormat df = new DecimalFormat("#.00");
         return nom + " - prix HT : " + df.format(prixUnitaireHT) + " € - prix TTC : " + df.format(getPrixUnitaireTTC()) + " € - quantité en stock : " + quantiteStock;
+    }
+
+    @Override
+    public I_Catalogue getCatalogue() {
+        return this.catalogue;
     }
 }

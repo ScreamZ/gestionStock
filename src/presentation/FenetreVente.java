@@ -17,7 +17,7 @@ public class FenetreVente extends JFrame implements ActionListener {
 
     public FenetreVente(String[] lesProduits) {
 
-        this.achatVenteControleur = new AchatVenteControleur();
+        this.achatVenteControleur = AchatVenteControleur.getInstance();
         this.lesProduits = lesProduits;
         setTitle("Vente");
         setBounds(500, 500, 200, 125);

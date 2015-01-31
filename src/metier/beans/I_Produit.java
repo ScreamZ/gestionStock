@@ -1,4 +1,4 @@
-package metier;
+package metier.beans;
 
 import metier.exceptions.ValeurNegativeException;
 
@@ -12,5 +12,5 @@ public interface I_Produit {
 	public abstract double getPrixUnitaireTTC();
 	public abstract double getPrixStockTTC();
 	public abstract String toString();
-
+    public I_Catalogue getCatalogue();
 }

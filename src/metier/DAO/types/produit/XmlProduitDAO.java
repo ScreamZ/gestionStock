@@ -1,7 +1,7 @@
-package metier.DAO;
+package metier.DAO.types.produit;
 
-import metier.I_Produit;
-import metier.Produit;
+import metier.beans.I_Produit;
+import metier.beans.Produit;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ProduitDAO_XML {
+public class XmlProduitDAO {
     private String uri = "C:/Produits.xml";
     private Document doc;
 
-    public ProduitDAO_XML() {
+    public XmlProduitDAO() {
         SAXBuilder sdoc = new SAXBuilder();
         try {
             doc = sdoc.build(uri);

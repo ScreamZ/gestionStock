@@ -1,7 +1,8 @@
-package metier.DAO;
+package metier.DAO.types.produit;
 
-import metier.I_Produit;
-import metier.Produit;
+import metier.DAO.oracle.OracleDAO;
+import metier.beans.I_Produit;
+import metier.beans.ProduitFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,20 +11,10 @@ import java.util.List;
 /**
  * ProduitDAO_Oracle
  */
-public class ProduitDAO_Oracle implements ProduitDAO {
+public class OracleProduitDAO extends OracleDAO implements ProduitDAO{
 
-    private Connection connection;
-
-    public ProduitDAO_Oracle() {
-        try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-            String url = "jdbc:oracle:thin:@//162.38.222.146:1521/iut";
-            String login = "hanssa";
-            String mdp = "1104003928V";
-            this.connection = DriverManager.getConnection(url, login, mdp);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
+    public OracleProduitDAO(Connection connection) {
+        super(connection);
     }
 
     /**
@@ -36,10 +27,11 @@ public class ProduitDAO_Oracle implements ProduitDAO {
     @Override
     public boolean create(I_Produit obj) {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("INSERT INTO Produits VALUES ('',?,?,?)");
+            CallableStatement statement = this.connection.prepareCall("{CALL NOUVEAUPRODUIT(?,?,?,?)}");
             statement.setString(1, obj.getNom());
             statement.setInt(2, obj.getQuantite());
             statement.setDouble(3, obj.getPrixUnitaireHT());
+            statement.setString(3, obj.getCatalogue().getNom());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -57,7 +49,7 @@ public class ProduitDAO_Oracle implements ProduitDAO {
     @Override
     public boolean delete(I_Produit obj) {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("DELETE FROM Produits WHERE nom = ?");
+            PreparedStatement statement = this.connection.prepareStatement("DELETE FROM Produit WHERE nom = ?");
             statement.setString(1, obj.getNom());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -76,7 +68,7 @@ public class ProduitDAO_Oracle implements ProduitDAO {
     @Override
     public boolean update(I_Produit obj) {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("UPDATE Produits SET quantite = ? WHERE nom = ?");
+            PreparedStatement statement = this.connection.prepareStatement("UPDATE Produit SET quantite = ? WHERE nom = ?");
             statement.setInt(1, obj.getQuantite());
             statement.setString(2, obj.getNom());
             return statement.executeUpdate() > 0;
@@ -96,14 +88,14 @@ public class ProduitDAO_Oracle implements ProduitDAO {
     @Override
     public I_Produit find(String nom) {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM Produits WHERE nom = ?");
+            PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM Produit WHERE nom = ?");
             statement.setString(1, nom);
             ResultSet rs = statement.executeQuery();
             if (!rs.next()) {
                 rs.close();
                 return null;
             } else {
-                I_Produit p = new Produit(rs.getString("nom"), rs.getDouble("prix_unitaire_ht"), rs.getInt("quantite"));
+                I_Produit p = ProduitFactory.createProduit(rs.getString("nom"), rs.getDouble("prix_unitaire_ht"), rs.getInt("quantite"));
                 rs.close();
                 return p;
             }
@@ -121,13 +113,13 @@ public class ProduitDAO_Oracle implements ProduitDAO {
     @Override
     public List<I_Produit> findAll() {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM Produits");
+            PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM Produit");
             ResultSet rs = statement.executeQuery();
             List<I_Produit> list = null;
             if (rs.next()) { // Checks for any results and moves cursor to first row,
                 list = new ArrayList<>();
                 do {
-                    list.add(new Produit(rs.getString("nom"), rs.getDouble("prix_unitaire_ht"), rs.getInt("quantite")));
+                    list.add(ProduitFactory.createProduit(rs.getString("nom"), rs.getDouble("prix_unitaire_ht"), rs.getInt("quantite")));
                 } while (rs.next());
             }
             rs.close();

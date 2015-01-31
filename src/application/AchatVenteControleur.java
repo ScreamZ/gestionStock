@@ -1,12 +1,27 @@
 package application;
 
 
+import metier.beans.Catalogue;
+
 /**
  * <strong>AchatVenteControleur</strong>
  *
  * <p>Permet le controle des ventes et des achats</p>
  */
-public class AchatVenteControleur extends BaseControleur {
+public class AchatVenteControleur {
+
+    private Catalogue catalogue;
+    private static AchatVenteControleur instance = new AchatVenteControleur();
+
+    private AchatVenteControleur(){}
+
+    public static AchatVenteControleur getInstance(){
+        return instance;
+    }
+
+    public void setCatalogue(Catalogue catalogue) {
+        this.catalogue = catalogue;
+    }
 
     /**
      * Augmente la quantité en stock pour un produit

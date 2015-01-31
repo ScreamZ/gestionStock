@@ -1,15 +1,18 @@
-package metier.DAO;
+package metier.DAO.types.produit;
 
-import metier.I_Produit;
+import metier.DAO.xml.XmlDAO;
+import metier.beans.I_Produit;
+import metier.beans.ProduitFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * AdapatateurProduitDAO_XML
  */
-public class AdapatateurProduitDAO_XML implements ProduitDAO {
+public class AdaptateurProduitDAO_XML extends XmlDAO implements ProduitDAO {
 
-    private ProduitDAO_XML produitDAOXml = new ProduitDAO_XML();
+    private XmlProduitDAO produitDAOXml = new XmlProduitDAO();
 
     /**
      * Méthode de création
@@ -56,7 +59,8 @@ public class AdapatateurProduitDAO_XML implements ProduitDAO {
      */
     @Override
     public I_Produit find(String nom) {
-        return this.produitDAOXml.lire(nom);
+        I_Produit produit = this.produitDAOXml.lire(nom);
+        return ProduitFactory.createProduit(produit.getNom(), produit.getPrixUnitaireHT(), produit.getQuantite());
     }
 
     /**
@@ -66,6 +70,11 @@ public class AdapatateurProduitDAO_XML implements ProduitDAO {
      */
     @Override
     public List<I_Produit> findAll() {
-        return this.produitDAOXml.lireTous();
+        List<I_Produit> produits = this.produitDAOXml.lireTous();
+        List<I_Produit> resultat = new ArrayList<>();
+        for (I_Produit produit : produits) {
+            resultat.add(ProduitFactory.createProduit(produit.getNom(), produit.getPrixUnitaireHT(), produit.getQuantite()));
+        }
+        return resultat;
     }
 }

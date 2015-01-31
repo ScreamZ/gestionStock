@@ -1,14 +1,30 @@
 package application;
 
-import metier.I_Produit;
-import metier.Produit;
+import metier.beans.Catalogue;
+import metier.beans.I_Produit;
+import metier.beans.ProduitFactory;
 
 /**
  * <strong>CreerSupprimerProduitControleur</strong>
  *
  * <p>Permet de gérer l'ajout, la suppression et la modification des produits.</p>
  */
-public class CreerSupprimerProduitControleur extends BaseControleur {
+public class CreerSupprimerProduitControleur {
+
+    private Catalogue catalogue;
+    private static CreerSupprimerProduitControleur instance = new CreerSupprimerProduitControleur();
+
+    public static CreerSupprimerProduitControleur getInstance(){
+        return instance;
+    }
+
+    private CreerSupprimerProduitControleur(){
+
+    }
+
+    public void setCatalogue(Catalogue catalogue) {
+        this.catalogue = catalogue;
+    }
 
     /**
      * Créer un produit et l'ajoute au catalogue
@@ -20,7 +36,7 @@ public class CreerSupprimerProduitControleur extends BaseControleur {
      * @return Produit Le produit créer
      */
     public I_Produit ajouterProduit(String nom, double prixHT, int qte) {
-        Produit produit = new Produit(nom, prixHT, qte);
+        I_Produit produit = ProduitFactory.createProduit(nom, prixHT, qte);
         this.catalogue.addProduit(produit);
         return produit;
     }

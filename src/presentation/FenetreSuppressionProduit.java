@@ -17,7 +17,7 @@ public class FenetreSuppressionProduit extends JFrame implements ActionListener 
     public FenetreSuppressionProduit(String lesProduits[]) {
 
         this.lesProduits = lesProduits;
-        creerSupprimerProduitControleur = new CreerSupprimerProduitControleur();
+        creerSupprimerProduitControleur = CreerSupprimerProduitControleur.getInstance();
         setTitle("Suppression produit");
         setBounds(500, 500, 200, 105);
         Container contentPane = getContentPane();
