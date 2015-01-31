@@ -3,12 +3,8 @@ package metier.DAO.types.catalogue;
 import metier.DAO.oracle.OracleDAO;
 import metier.beans.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 
 /**
  * OracleCatalogueDAO
@@ -29,7 +25,7 @@ public class OracleCatalogueDAO extends OracleDAO implements CatalogueDAO {
     @Override
     public boolean create(I_Catalogue obj) {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("INSERT INTO Catalogue VALUES ('',?)");
+            CallableStatement statement = this.connection.prepareCall("{CALL NOUVEAUCATALOGUE(?)}");
             statement.setString(1, obj.getNom());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -41,7 +37,7 @@ public class OracleCatalogueDAO extends OracleDAO implements CatalogueDAO {
     /**
      * Méthode pour effacer
      *
-     * @param obj Le Catalogue à modifier
+     * @param obj Le Catalogue à supprimer
      *
      * @return boolean
      */
@@ -66,7 +62,7 @@ public class OracleCatalogueDAO extends OracleDAO implements CatalogueDAO {
      */
     @Override
     public boolean update(I_Catalogue obj) {
-        System.out.println("Sans utilité ?" + this.getClass().getName());
+        System.out.println("Sans utilité ? " + this.getClass().getName());
         return false;
     }
 
@@ -166,6 +162,31 @@ public class OracleCatalogueDAO extends OracleDAO implements CatalogueDAO {
                 list = new ArrayList<>();
                 do {
                     list.add(ProduitFactory.createProduit(rs.getString("nom"), rs.getDouble("prix_unitaire_ht"), rs.getInt("quantite")));
+                } while (rs.next());
+            }
+            rs.close();
+            return list;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Récupère tous les noms de catalogues avec leur nombre de produits
+     *
+     * @return Une map avec le nom et le nombre pour chaque ligne
+     */
+    @Override
+    public List<String> findAllCataloguesWithAmountOfProducts() {
+        try {
+            PreparedStatement statement = this.connection.prepareStatement("SELECT c.NOM AS nom,COUNT(p.ID) AS count FROM PRODUIT p INNER JOIN CATALOGUE c ON p.CATALOGUE_ID = c.ID GROUP BY c.NOM");
+            ResultSet rs = statement.executeQuery();
+            List<String> list = null;
+            if (rs.next()) { // Checks for any results and moves cursor to first row,
+                list = new ArrayList<>();
+                do {
+                    list.add(rs.getString("nom") + " : " + rs.getInt("count") + " produits");
                 } while (rs.next());
             }
             rs.close();

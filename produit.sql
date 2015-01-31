@@ -6,6 +6,12 @@ CREATE TABLE Catalogue
   CONSTRAINT pk_catalogue PRIMARY KEY (id),
   CONSTRAINT unique_catalogue_nom UNIQUE (nom)
 );
+CREATE SEQUENCE catalogue_seq;
+CREATE OR REPLACE PROCEDURE nouveauCatalogue(p_nomCatalogue IN CATALOGUE.NOM%TYPE)
+IS
+  BEGIN
+    INSERT INTO Catalogue VALUES (catalogue_seq.nextval, p_nomCatalogue);
+  END;
 
 CREATE TABLE Produit
 (
@@ -18,15 +24,18 @@ CREATE TABLE Produit
   CONSTRAINT fk_produit_catalogue FOREIGN KEY (catalogue_id) REFERENCES Catalogue (id)
 );
 CREATE SEQUENCE produit_seq;
-CREATE OR REPLACE PROCEDURE nouveauProduit(p_nomProduit IN PRODUIT.NOM%TYPE,
-                                           p_quantite   IN PRODUIT.QUANTITE%TYPE,
+CREATE OR REPLACE PROCEDURE nouveauProduit(p_nomProduit     IN PRODUIT.NOM%TYPE,
+                                           p_quantite       IN PRODUIT.QUANTITE%TYPE,
                                            p_prixUnitaireHT IN PRODUIT.PRIX_UNITAIRE_HT%TYPE,
-                                            p_catalogue IN CATALOGUE.NOM%TYPE)
+                                           p_catalogue      IN CATALOGUE.NOM%TYPE)
 IS
-  DECLARE v_id NUMBER;
+DECLARE v_id NUMBER;
   BEGIN
-    SELECT ID INTO v_id FROM Catalogue WHERE nom = p_catalogue;
-    INSERT INTO Produit VALUES (produit_seq.nextval, p_nomProduit, p_quantite, p_prixUnitaireHT,v_id);
+    SELECT ID
+    INTO v_id
+    FROM Catalogue
+    WHERE nom = p_catalogue;
+    INSERT INTO Produit VALUES (produit_seq.nextval, p_nomProduit, p_quantite, p_prixUnitaireHT, v_id);
   END;
 
 /* BDD OBJET A VERIFIER */

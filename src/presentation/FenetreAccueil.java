@@ -1,5 +1,12 @@
 package presentation;
 
+import application.SelectionnerCatalogueControleur;
+import metier.DAO.AbstractDAOFactory;
+import metier.beans.Catalogue;
+import metier.beans.CatalogueFactory;
+import metier.beans.I_Catalogue;
+import metier.beans.ProduitFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -77,11 +84,14 @@ public class FenetreAccueil extends JFrame implements ActionListener {
         btSupprimer.addActionListener(this);
         btSelectionner.addActionListener(this);
 
-        String[] tab = {"Formacia", "Le Redoutable", "Noitaicossa"};
+        java.util.List<String> lesCatalogues = SelectionnerCatalogueControleur.getInstance().getAllCataloquesNames();
+        String[] tab = lesCatalogues.toArray(new String[lesCatalogues.size()]);
         modifierListesCatalogues(tab);
-        String[] tab2 = {"Formacia : 6 produits", "Le Redoutable : 4 produits", "Noitaicossa : 0 produits"};
+
+        java.util.List<String> lesCataloguesAvecNombreProduit = SelectionnerCatalogueControleur.getInstance().getAllCataloguesWithAmountOfProducts();
+        String[] tab2 = lesCataloguesAvecNombreProduit.toArray(new String[lesCataloguesAvecNombreProduit.size()]);
         modifierDetailCatalogues(tab2);
-        modifierNbCatalogues(3);
+        modifierNbCatalogues(lesCatalogues.size());
         setVisible(true);
     }
 
@@ -94,6 +104,7 @@ public class FenetreAccueil extends JFrame implements ActionListener {
             String texteAjout = txtAjouter.getText();
             if (!texteAjout.equals("")) {
                 System.out.println("ajouter le catalogue " + texteAjout);
+                AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.ORACLE).getCatalogueDAO().create(new Catalogue(texteAjout));
                 txtAjouter.setText(null);
             }
         }
@@ -101,11 +112,15 @@ public class FenetreAccueil extends JFrame implements ActionListener {
             String texteSupprime = (String) cmbSupprimer.getSelectedItem();
             if (texteSupprime != null)
                 System.out.println("supprime catalogue " + texteSupprime);
+            I_Catalogue catalogueDelete = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.ORACLE).getCatalogueDAO().find(texteSupprime);
+            AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.ORACLE).getCatalogueDAO().delete(catalogueDelete);
         }
         if (e.getSource() == btSelectionner) {
             String texteSelection = (String) cmbSupprimer.getSelectedItem();
             if (texteSelection != null) {
                 System.out.println("selectionne catalogue " + texteSelection);
+                ProduitFactory.CURRENT_CATALOGUE = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.ORACLE).getCatalogueDAO().find(texteSelection);
+                new FenetrePrincipale();
                 this.dispose();
             }
         }
