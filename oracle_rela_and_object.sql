@@ -1,4 +1,4 @@
-/* BDD relationnelle  OKKKKKKKK*/
+/* BDD relationnelle  ORACLE */
 CREATE TABLE Catalogue
 (
   id  NUMBER         NOT NULL,
@@ -38,6 +38,7 @@ DECLARE v_id NUMBER;
     WHERE nom = p_catalogue;
     INSERT INTO Produit VALUES (produit_seq.nextval, p_nomProduit, p_quantite, p_prixUnitaireHT, v_id);
   END;
+
 
 /* BDD OBJET A VERIFIER */
 CREATE OR REPLACE TYPE produit_type AS OBJECT

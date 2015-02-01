@@ -37,6 +37,12 @@ public class MySqlProduitDAO extends MySqlDAO implements ProduitDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -56,6 +62,12 @@ public class MySqlProduitDAO extends MySqlDAO implements ProduitDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -76,6 +88,12 @@ public class MySqlProduitDAO extends MySqlDAO implements ProduitDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -103,6 +121,12 @@ public class MySqlProduitDAO extends MySqlDAO implements ProduitDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -128,6 +152,12 @@ public class MySqlProduitDAO extends MySqlDAO implements ProduitDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

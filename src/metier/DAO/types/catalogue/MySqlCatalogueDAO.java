@@ -31,6 +31,12 @@ public class MySqlCatalogueDAO extends MySqlDAO implements CatalogueDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -50,6 +56,12 @@ public class MySqlCatalogueDAO extends MySqlDAO implements CatalogueDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -90,6 +102,12 @@ public class MySqlCatalogueDAO extends MySqlDAO implements CatalogueDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -115,6 +133,12 @@ public class MySqlCatalogueDAO extends MySqlDAO implements CatalogueDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -141,6 +165,12 @@ public class MySqlCatalogueDAO extends MySqlDAO implements CatalogueDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -168,6 +198,12 @@ public class MySqlCatalogueDAO extends MySqlDAO implements CatalogueDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -193,6 +229,12 @@ public class MySqlCatalogueDAO extends MySqlDAO implements CatalogueDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -218,6 +260,12 @@ public class MySqlCatalogueDAO extends MySqlDAO implements CatalogueDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }finally {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

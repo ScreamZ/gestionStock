@@ -100,11 +100,6 @@ public class FenetreAccueil extends JFrame implements ActionListener {
             String[] tab2 = lesCataloguesAvecNombreProduit.toArray(new String[lesCataloguesAvecNombreProduit.size()]);
             modifierDetailCatalogues(tab2);
             modifierNbCatalogues(lesCatalogues.size());
-        }else{
-            cmbSupprimer.removeAllItems();
-            cmbSelectionner.removeAllItems();
-            modifierNbCatalogues(0);
-            taDetailCatalogues.setText("");
         }
     }
 
@@ -159,9 +154,7 @@ public class FenetreAccueil extends JFrame implements ActionListener {
 
     private void modifierDetailCatalogues(String[] detailCatalogues) {
         taDetailCatalogues.setText("");
-        System.out.println(taDetailCatalogues.getText());
         if (detailCatalogues != null) {
-            System.out.println(taDetailCatalogues.getText());
             for (int i = 0; i < detailCatalogues.length; i++) {
                 taDetailCatalogues.append(detailCatalogues[i] + "\n");
             }

@@ -1,8 +1,6 @@
 import metier.DAO.AbstractDAOFactory;
-import metier.beans.Catalogue;
-import metier.beans.I_Catalogue;
-import metier.beans.I_Produit;
-import metier.beans.Produit;
+import metier.DAO.types.produit.ProduitDAO;
+import metier.beans.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,9 +15,19 @@ public class CatalogueTest {
 
     @Before
     public void setUp() {
-        AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().find("test");
+        I_Catalogue catalogue = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().find("test");
+        AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().delete(catalogue);
+        if (catalogue == null) {
+            AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().create(CatalogueFactory.createCatalogue("test"));
+            this.cat = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().find("test");
+        } else {
+            AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().delete(catalogue);
+            AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().create(CatalogueFactory.createCatalogue("test"));
+            this.cat = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().find("test");
+        }
+
+        ProduitFactory.CURRENT_CATALOGUE = this.cat;
 //		Si votre Catalogue est un Singleton, il faut changer la ligne précédente puis vider le Catalogue avec la méthode clear() comme indiqué à la ligne suivante
-        cat.clear();
     }
 
     @Test
