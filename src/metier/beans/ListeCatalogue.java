@@ -9,8 +9,6 @@ import java.util.List;
  * ListeCatalogue
  */
 public class ListeCatalogue {
-    public static final int WHICHFACTORY = AbstractDAOFactory.ORACLE;
-
     private static ListeCatalogue instance = new ListeCatalogue();
     private HashMap<String, I_Catalogue> lesCatalogues = new HashMap<>();
 
@@ -26,7 +24,7 @@ public class ListeCatalogue {
      * @return Le catalogue en question ou null
      */
     public I_Catalogue getCatalogue(String nom) {
-        return AbstractDAOFactory.getDAOFactory(WHICHFACTORY).getCatalogueDAO().find(nom);
+        return AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().find(nom);
     }
 
     /**
@@ -35,7 +33,7 @@ public class ListeCatalogue {
      * @return La liste des noms de catalogue
      */
     public HashMap<String, I_Catalogue> getAllCataloguesName() {
-        List<I_Catalogue> catalogueList = AbstractDAOFactory.getDAOFactory(WHICHFACTORY).getCatalogueDAO().findAll();
+        List<I_Catalogue> catalogueList = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().findAll();
 
         for (I_Catalogue catalogue : catalogueList) {
             this.lesCatalogues.put(catalogue.getNom(), null);

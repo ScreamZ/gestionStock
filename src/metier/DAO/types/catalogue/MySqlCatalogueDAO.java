@@ -1,17 +1,17 @@
 package metier.DAO.types.catalogue;
 
-import metier.DAO.oracle.OracleDAO;
+import metier.DAO.mysql.MySqlDAO;
 import metier.beans.*;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * OracleCatalogueDAO
+ * MySqlSqlCatalogueDAO
  */
-public class OracleCatalogueDAO extends OracleDAO implements CatalogueDAO {
-
-    public OracleCatalogueDAO(Connection connection) {
+public class MySqlCatalogueDAO extends MySqlDAO implements CatalogueDAO {
+    public MySqlCatalogueDAO(Connection connection) {
         super(connection);
     }
 
@@ -25,7 +25,7 @@ public class OracleCatalogueDAO extends OracleDAO implements CatalogueDAO {
     @Override
     public boolean create(I_Catalogue obj) {
         try {
-            CallableStatement statement = this.connection.prepareCall("{CALL NOUVEAUCATALOGUE(?)}");
+            PreparedStatement statement = this.connection.prepareStatement("INSERT INTO Catalogue (nom) VALUES (?)");
             statement.setString(1, obj.getNom());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -44,7 +44,7 @@ public class OracleCatalogueDAO extends OracleDAO implements CatalogueDAO {
     @Override
     public boolean delete(I_Catalogue obj) {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("DELETE FROM Catalogue WHERE nom = ?");
+            PreparedStatement statement = this.connection.prepareStatement("DELETE FROM Catalogue WHERE nom = ? ");
             statement.setString(1, obj.getNom());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -83,7 +83,7 @@ public class OracleCatalogueDAO extends OracleDAO implements CatalogueDAO {
                 rs.close();
                 return null;
             } else {
-                I_Catalogue p = new Catalogue(rs.getString("nom"));
+                I_Catalogue p = CatalogueFactory.createCatalogue(rs.getString("nom"));
                 rs.close();
                 return p;
             }
@@ -157,9 +157,8 @@ public class OracleCatalogueDAO extends OracleDAO implements CatalogueDAO {
             PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM PRODUIT p INNER JOIN CATALOGUE c ON p.CATALOGUE_ID = c.ID WHERE c.NOM = ?");
             statement.setString(1, nomCatalogue);
             ResultSet rs = statement.executeQuery();
-            List<I_Produit> list = null;
+            List<I_Produit> list = new ArrayList<>();
             if (rs.next()) { // Checks for any results and moves cursor to first row,
-                list = new ArrayList<>();
                 do {
                     list.add(ProduitFactory.createProduit(rs.getString("nom"), rs.getDouble("prix_unitaire_ht"), rs.getInt("quantite")));
                 } while (rs.next());
@@ -180,7 +179,7 @@ public class OracleCatalogueDAO extends OracleDAO implements CatalogueDAO {
     @Override
     public List<String> findAllCataloguesWithAmountOfProducts() {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("SELECT c.NOM AS nom,COUNT(p.ID) AS count FROM PRODUIT p INNER JOIN CATALOGUE c ON p.CATALOGUE_ID = c.ID GROUP BY c.NOM");
+            PreparedStatement statement = this.connection.prepareStatement("SELECT c.NOM AS nom,COUNT(p.ID) AS count FROM PRODUIT p RIGHT JOIN CATALOGUE c ON p.CATALOGUE_ID = c.ID GROUP BY c.NOM");
             ResultSet rs = statement.executeQuery();
             List<String> list = null;
             if (rs.next()) { // Checks for any results and moves cursor to first row,
@@ -191,6 +190,31 @@ public class OracleCatalogueDAO extends OracleDAO implements CatalogueDAO {
             }
             rs.close();
             return list;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Récupère l'id du catalogue donné en base de donnée MySQL
+     * @param catalogue le catalogue
+     * @return l'id du catalogue
+     */
+    @Override
+    public Integer findCatalogueID(I_Catalogue catalogue) {
+        try {
+            PreparedStatement statement = this.connection.prepareStatement("SELECT c.ID FROM Catalogue c WHERE nom = ?");
+            statement.setString(1, catalogue.getNom());
+            ResultSet rs = statement.executeQuery();
+            if (!rs.next()) {
+                rs.close();
+                return null;
+            } else {
+               Integer idCatalogue = rs.getInt("id");
+                rs.close();
+                return idCatalogue;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

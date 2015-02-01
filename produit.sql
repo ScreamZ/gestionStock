@@ -20,8 +20,9 @@ CREATE TABLE Produit
   quantite         INT            NOT NULL,
   prix_unitaire_ht NUMBER         NOT NULL,
   catalogue_id     NUMBER         NOT NULL,
-  CONSTRAINT pk_produit PRIMARY KEY (nom, catalogue_id),
-  CONSTRAINT fk_produit_catalogue FOREIGN KEY (catalogue_id) REFERENCES Catalogue (id)
+  CONSTRAINT pk_produit PRIMARY KEY (id),
+  CONSTRAINT unique_nom UNIQUE (nom,catalogue_id),
+  CONSTRAINT fk_produit_catalogue FOREIGN KEY (catalogue_id) REFERENCES Catalogue (id) ON DELETE CASCADE
 );
 CREATE SEQUENCE produit_seq;
 CREATE OR REPLACE PROCEDURE nouveauProduit(p_nomProduit     IN PRODUIT.NOM%TYPE,

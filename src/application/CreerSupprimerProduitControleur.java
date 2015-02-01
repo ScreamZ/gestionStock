@@ -1,6 +1,7 @@
 package application;
 
 import metier.beans.Catalogue;
+import metier.beans.I_Catalogue;
 import metier.beans.I_Produit;
 import metier.beans.ProduitFactory;
 
@@ -11,7 +12,7 @@ import metier.beans.ProduitFactory;
  */
 public class CreerSupprimerProduitControleur {
 
-    private Catalogue catalogue;
+    private I_Catalogue catalogue;
     private static CreerSupprimerProduitControleur instance = new CreerSupprimerProduitControleur();
 
     public static CreerSupprimerProduitControleur getInstance(){
@@ -19,7 +20,7 @@ public class CreerSupprimerProduitControleur {
     }
 
     private CreerSupprimerProduitControleur(){
-
+        this.catalogue = ProduitFactory.CURRENT_CATALOGUE;
     }
 
     public void setCatalogue(Catalogue catalogue) {

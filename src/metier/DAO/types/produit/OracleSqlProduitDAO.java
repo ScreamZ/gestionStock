@@ -1,6 +1,6 @@
 package metier.DAO.types.produit;
 
-import metier.DAO.oracle.OracleDAO;
+import metier.DAO.oracle_sql.OracleDAO;
 import metier.beans.I_Produit;
 import metier.beans.ProduitFactory;
 
@@ -11,9 +11,9 @@ import java.util.List;
 /**
  * ProduitDAO_Oracle
  */
-public class OracleProduitDAO extends OracleDAO implements ProduitDAO{
+public class OracleSqlProduitDAO extends OracleDAO implements ProduitDAO{
 
-    public OracleProduitDAO(Connection connection) {
+    public OracleSqlProduitDAO(Connection connection) {
         super(connection);
     }
 

@@ -13,19 +13,15 @@ import java.util.*;
  */
 public class Catalogue implements I_Catalogue {
 
-    private final int SAVE_STRATEGY = AbstractDAOFactory.ORACLE; // Any constant from AbstractDAOFactory class
     private String nom;
     private List<I_Produit> productList;
 
     public Catalogue(String nom) {
         try {
-            if (AbstractDAOFactory.getDAOFactory(SAVE_STRATEGY).getCatalogueDAO().find(nom) != null) {
-                throw new Exception("Already Exist catalogue named : " + nom);
-            }
-
             this.nom = nom;
             this.productList = new ArrayList<>();
-            this.productList.addAll(AbstractDAOFactory.getDAOFactory(SAVE_STRATEGY).getCatalogueDAO().findProduitsForCatalogue(nom));
+            List<I_Produit> produitsForCatalogue = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().findProduitsForCatalogue(nom);
+            this.productList.addAll(produitsForCatalogue);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -55,7 +51,7 @@ public class Catalogue implements I_Catalogue {
         if (produit.getQuantite() < 0) return false;
         try {
             this.productList.add(produit);
-            getProduitDAO().create(produit);
+            getCatalogueDao().create(produit);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,7 +80,7 @@ public class Catalogue implements I_Catalogue {
         if (p.getQuantite() < 0) return false;
         try {
             this.addProduit(p);
-            getProduitDAO().create(p);
+            getCatalogueDao().create(p);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,7 +107,7 @@ public class Catalogue implements I_Catalogue {
 
                 if (this.addProduit(p)) {
                     try {
-                        getProduitDAO().create(p);
+                        getCatalogueDao().create(p);
                         nb++;
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -140,7 +136,7 @@ public class Catalogue implements I_Catalogue {
         for (I_Produit i_produit : productList) {
             if (i_produit.getNom().equals(nom)) {
                 try {
-                    getProduitDAO().delete(i_produit);
+                    getCatalogueDao().delete(i_produit);
                     this.productList.remove(i_produit);
                     return true;
                 } catch (Exception e) {
@@ -168,7 +164,7 @@ public class Catalogue implements I_Catalogue {
             if (i_produit.getNom().equals(nomProduit)) {
                 try {
                     i_produit.ajouter(qteAchetee);
-                    getProduitDAO().update(i_produit);
+                    getCatalogueDao().update(i_produit);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -196,7 +192,7 @@ public class Catalogue implements I_Catalogue {
                 try {
                     if (i_produit.getQuantite() < qteVendue) return false;
                     i_produit.enlever(qteVendue);
-                    getProduitDAO().update(i_produit);
+                    getCatalogueDao().update(i_produit);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -226,6 +222,7 @@ public class Catalogue implements I_Catalogue {
             lesProduits[compteur] = i_produit.getNom();
             compteur++;
         }
+
         return lesProduits;
     }
 
@@ -277,7 +274,7 @@ public class Catalogue implements I_Catalogue {
      *
      * @return Te factory instance
      */
-    private ProduitDAO getProduitDAO() {
-        return AbstractDAOFactory.getDAOFactory(SAVE_STRATEGY).getProduitDAO();
+    private ProduitDAO getCatalogueDao() {
+        return AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getProduitDAO();
     }
 }

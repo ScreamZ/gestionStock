@@ -19,7 +19,11 @@ public class XmlDAOFactory extends AbstractDAOFactory {
 
     @Override
     public CatalogueDAO getCatalogueDAO() {
-        // Not supported as XML
+        try {
+            throw new Exception("Not supported XML for CatalogueDAO");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

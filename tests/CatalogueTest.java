@@ -17,7 +17,7 @@ public class CatalogueTest {
 
     @Before
     public void setUp() {
-        AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.ORACLE).getCatalogueDAO().find("test");
+        AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().find("test");
 //		Si votre Catalogue est un Singleton, il faut changer la ligne précédente puis vider le Catalogue avec la méthode clear() comme indiqué à la ligne suivante
         cat.clear();
     }

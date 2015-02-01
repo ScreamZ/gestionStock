@@ -1,6 +1,8 @@
 package application;
 
 import metier.beans.Catalogue;
+import metier.beans.I_Catalogue;
+import metier.beans.ProduitFactory;
 
 /**
  * <strong>EtatStockControleur</strong>
@@ -9,7 +11,7 @@ import metier.beans.Catalogue;
  */
 public class EtatStockControleur {
 
-    private Catalogue catalogue;
+    private I_Catalogue catalogue;
     private static EtatStockControleur instance = new EtatStockControleur();
 
     public static EtatStockControleur getInstance(){
@@ -17,11 +19,7 @@ public class EtatStockControleur {
     }
 
     private EtatStockControleur(){
-
-    }
-
-    public void setCatalogue(Catalogue catalogue) {
-        this.catalogue = catalogue;
+        this.catalogue = ProduitFactory.CURRENT_CATALOGUE;
     }
 
     /**

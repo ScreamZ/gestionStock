@@ -1,10 +1,8 @@
-package metier.DAO.oracle;
-
+package metier.DAO.oracle_objet;
 
 import metier.DAO.AbstractDAOFactory;
+import metier.DAO.types.produit.OracleObjetProduitDAO;
 import metier.DAO.types.catalogue.CatalogueDAO;
-import metier.DAO.types.catalogue.OracleCatalogueDAO;
-import metier.DAO.types.produit.OracleProduitDAO;
 import metier.DAO.types.produit.ProduitDAO;
 
 import java.sql.Connection;
@@ -12,18 +10,17 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * OracleDbDAOFactory
+ * OracleObjetDAOFactory
  */
-
-public class OracleDAOFactory extends AbstractDAOFactory {
+public class OracleObjetDAOFactory extends AbstractDAOFactory {
     private static final String DRIVER = "oracle.jdbc.OracleDriver";
     private static final String DBURL = "jdbc:oracle:thin:@//162.38.222.146:1521/iut";
     private static final String DBUSER = "hanssa";
-    private static final String DBPWD = "1004003928V";
+    private static final String DBPWD = "";
 
     private Connection connection;
 
-    public OracleDAOFactory() {
+    public OracleObjetDAOFactory() {
         try {
             Class.forName(DRIVER);
             this.connection = DriverManager.getConnection(DBURL, DBUSER, DBPWD);
@@ -34,11 +31,11 @@ public class OracleDAOFactory extends AbstractDAOFactory {
 
     @Override
     public ProduitDAO getProduitDAO() {
-        return new OracleProduitDAO(connection);
+        return new OracleObjetProduitDAO(connection);
     }
 
     @Override
     public CatalogueDAO getCatalogueDAO() {
-        return new OracleCatalogueDAO(connection);
+        return new OracleObjetCatalogueDAO(connection);
     }
 }

@@ -84,15 +84,28 @@ public class FenetreAccueil extends JFrame implements ActionListener {
         btSupprimer.addActionListener(this);
         btSelectionner.addActionListener(this);
 
+        UpdateCatalogueList();
+        setVisible(true);
+    }
+
+    private void UpdateCatalogueList() {
         java.util.List<String> lesCatalogues = SelectionnerCatalogueControleur.getInstance().getAllCataloquesNames();
-        String[] tab = lesCatalogues.toArray(new String[lesCatalogues.size()]);
-        modifierListesCatalogues(tab);
+        if (lesCatalogues != null) {
+            String[] tab = lesCatalogues.toArray(new String[lesCatalogues.size()]);
+            modifierListesCatalogues(tab);
+        }
 
         java.util.List<String> lesCataloguesAvecNombreProduit = SelectionnerCatalogueControleur.getInstance().getAllCataloguesWithAmountOfProducts();
-        String[] tab2 = lesCataloguesAvecNombreProduit.toArray(new String[lesCataloguesAvecNombreProduit.size()]);
-        modifierDetailCatalogues(tab2);
-        modifierNbCatalogues(lesCatalogues.size());
-        setVisible(true);
+        if (lesCataloguesAvecNombreProduit != null) {
+            String[] tab2 = lesCataloguesAvecNombreProduit.toArray(new String[lesCataloguesAvecNombreProduit.size()]);
+            modifierDetailCatalogues(tab2);
+            modifierNbCatalogues(lesCatalogues.size());
+        }else{
+            cmbSupprimer.removeAllItems();
+            cmbSelectionner.removeAllItems();
+            modifierNbCatalogues(0);
+            taDetailCatalogues.setText("");
+        }
     }
 
     public static void main(String[] args) {
@@ -104,22 +117,25 @@ public class FenetreAccueil extends JFrame implements ActionListener {
             String texteAjout = txtAjouter.getText();
             if (!texteAjout.equals("")) {
                 System.out.println("ajouter le catalogue " + texteAjout);
-                AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.ORACLE).getCatalogueDAO().create(new Catalogue(texteAjout));
+                SelectionnerCatalogueControleur.getInstance().createCatalogue(texteAjout);
+                UpdateCatalogueList();
                 txtAjouter.setText(null);
             }
         }
         if (e.getSource() == btSupprimer) {
             String texteSupprime = (String) cmbSupprimer.getSelectedItem();
-            if (texteSupprime != null)
+            if (texteSupprime != null) {
                 System.out.println("supprime catalogue " + texteSupprime);
-            I_Catalogue catalogueDelete = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.ORACLE).getCatalogueDAO().find(texteSupprime);
-            AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.ORACLE).getCatalogueDAO().delete(catalogueDelete);
+                I_Catalogue catalogueDelete = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().find(texteSupprime);
+                AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().delete(catalogueDelete);
+                UpdateCatalogueList();
+            }
         }
         if (e.getSource() == btSelectionner) {
-            String texteSelection = (String) cmbSupprimer.getSelectedItem();
+            String texteSelection = (String) cmbSelectionner.getSelectedItem();
             if (texteSelection != null) {
                 System.out.println("selectionne catalogue " + texteSelection);
-                ProduitFactory.CURRENT_CATALOGUE = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.ORACLE).getCatalogueDAO().find(texteSelection);
+                ProduitFactory.CURRENT_CATALOGUE = AbstractDAOFactory.getDAOFactory(AbstractDAOFactory.CATALOGUE_DAO_STRATEGY).getCatalogueDAO().find(texteSelection);
                 new FenetrePrincipale();
                 this.dispose();
             }
@@ -129,11 +145,12 @@ public class FenetreAccueil extends JFrame implements ActionListener {
     private void modifierListesCatalogues(String[] nomsCatalogues) {
         cmbSupprimer.removeAllItems();
         cmbSelectionner.removeAllItems();
-        if (nomsCatalogues != null)
+        if (nomsCatalogues != null) {
             for (int i = 0; i < nomsCatalogues.length; i++) {
                 cmbSupprimer.addItem(nomsCatalogues[i]);
                 cmbSelectionner.addItem(nomsCatalogues[i]);
             }
+        }
     }
 
     private void modifierNbCatalogues(int nb) {
@@ -142,9 +159,12 @@ public class FenetreAccueil extends JFrame implements ActionListener {
 
     private void modifierDetailCatalogues(String[] detailCatalogues) {
         taDetailCatalogues.setText("");
+        System.out.println(taDetailCatalogues.getText());
         if (detailCatalogues != null) {
-            for (int i = 0; i < detailCatalogues.length; i++)
+            System.out.println(taDetailCatalogues.getText());
+            for (int i = 0; i < detailCatalogues.length; i++) {
                 taDetailCatalogues.append(detailCatalogues[i] + "\n");
+            }
         }
     }
 }

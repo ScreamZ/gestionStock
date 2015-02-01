@@ -2,6 +2,8 @@ package application;
 
 
 import metier.beans.Catalogue;
+import metier.beans.I_Catalogue;
+import metier.beans.ProduitFactory;
 
 /**
  * <strong>AchatVenteControleur</strong>
@@ -10,10 +12,12 @@ import metier.beans.Catalogue;
  */
 public class AchatVenteControleur {
 
-    private Catalogue catalogue;
+    private I_Catalogue catalogue;
     private static AchatVenteControleur instance = new AchatVenteControleur();
 
-    private AchatVenteControleur(){}
+    private AchatVenteControleur(){
+        this.catalogue = ProduitFactory.CURRENT_CATALOGUE;
+    }
 
     public static AchatVenteControleur getInstance(){
         return instance;
